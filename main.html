@@ -65,6 +65,7 @@
         <div class="message text-danger" id="message"></div>
         <div class="score-display text-success fw-bold" id="scoreDisplay" style="margin-top: 1rem;"></div>
         <div id="resultTable" style="display: none;"></div>
+        <button type="button" class="btn btn-info" onclick="location.reload()" style="display: none;" id="refreshButton">다시 시작</button>
     </div>
 
     <script>
@@ -83,6 +84,7 @@
                 document.getElementById('inputSection').style.display = 'none';
                 document.getElementById('scoreDisplay').textContent = '';
                 displayResults();
+                document.getElementById('refreshButton').style.display = 'inline-block';
                 attempts = 0;
                 successes = 0;
                 totalTime = 0;
@@ -93,6 +95,7 @@
             randomNumber = Math.floor(100000 + Math.random() * 900000).toString();
             document.getElementById('numberDisplay').textContent = randomNumber;
             document.getElementById('inputSection').style.display = 'block';
+            document.getElementById('startButton').style.display = 'none';
             document.getElementById('message').textContent = '';
             document.getElementById('userInput').value = '';
             document.getElementById('userInput').focus();
