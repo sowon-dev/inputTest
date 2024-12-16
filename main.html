@@ -60,12 +60,12 @@
         <button type="button" class="btn btn-outline-primary" onclick="startGame()" id="startButton">게임 시작</button>
         <div class="input-section" style="display: none;" id="inputSection">
             <input type="text" class="form-control w-50 mx-auto" id="userInput" maxlength="6" placeholder="숫자를 입력하세요" onkeydown="handleEnter(event)">
-            <button class="btn btn-primary" onclick="checkAnswer()">제출</button>
+            <button class="btn btn-outline-primary" onclick="checkAnswer()">제출</button>
         </div>
         <div class="message text-danger" id="message"></div>
         <div class="score-display text-success fw-bold" id="scoreDisplay" style="margin-top: 1rem;"></div>
         <div id="resultTable" style="display: none;"></div>
-        <button type="button" class="btn btn-info" onclick="location.reload()" style="display: none;" id="refreshButton">다시 시작</button>
+        <button type="button" class="btn btn-outline-light" onclick="location.reload()" style="display: none;" id="refreshButton">다시 시작</button>
     </div>
 
     <script>
@@ -79,8 +79,8 @@
 
         function startGame() {
             if (attempts >= 10) {
-                document.getElementById('message').textContent = `게임 종료! 10번 중 ${successes}번 성공했습니다. 총 소요 시간: ${(totalTime / 1000).toFixed(2)}초.`;
-                document.getElementById('numberDisplay').textContent = '게임 시작';
+                document.getElementById('message').textContent = `게임 종료! 10번 중 ${successes}번 성공했습니다. <br>총 소요 시간: ${(totalTime / 1000).toFixed(2)}초.`;
+                document.getElementById('numberDisplay').textContent = '게임 결과';
                 document.getElementById('inputSection').style.display = 'none';
                 document.getElementById('scoreDisplay').textContent = '';
                 displayResults();
