@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>광클테스트트</title>
+    <title>광클 정확도를 높이자</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -41,6 +41,21 @@
             font-size: 1rem;
             cursor: pointer;
         }
+
+        table {
+            margin-top: 1rem;
+            border-collapse: collapse;
+            width: 80%;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+        }
+
+        th, td {
+            padding: 0.5rem;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -54,6 +69,7 @@
         </div>
         <div class="message" id="message"></div>
         <div class="score-display" id="scoreDisplay" style="margin-top: 1rem; font-size: 1.2rem;"></div>
+        <div id="resultTable" style="display: none;"></div>
     </div>
 
     <script>
@@ -64,6 +80,7 @@
         let totalTime = 0;
         let totalScore = 0;
         let startTime;
+        const results = [];
 
         function startGame() {
             if (attempts >= 10) {
@@ -71,10 +88,12 @@
                 document.getElementById('numberDisplay').textContent = 'Press Start';
                 document.getElementById('inputSection').style.display = 'none';
                 document.getElementById('scoreDisplay').textContent = '';
+                displayResults();
                 attempts = 0;
                 successes = 0;
                 totalTime = 0;
                 totalScore = 0;
+                results.length = 0;
                 return;
             }
 
@@ -93,6 +112,11 @@
             timer = setTimeout(() => {
                 document.getElementById('message').textContent = 'Time is up! You failed.';
                 document.getElementById('inputSection').style.display = 'none';
+                results.push({
+                    displayed: randomNumber,
+                    entered: "(Timed Out)",
+                    match: false
+                });
                 attempts++;
                 startGame();
             }, 4000);
@@ -106,7 +130,8 @@
             const elapsedTime = endTime - startTime;
             totalTime += elapsedTime;
 
-            if (userInput === randomNumber) {
+            const match = userInput === randomNumber;
+            if (match) {
                 const baseScore = 10;
                 const bonus = Math.max(0, 5 - elapsedTime / 1000); // Faster responses earn higher bonuses
                 const roundScore = baseScore + Math.round(bonus * 10);
@@ -118,10 +143,35 @@
                 document.getElementById('message').textContent = 'Failure! Incorrect number.';
             }
 
+            results.push({
+                displayed: randomNumber,
+                entered: userInput,
+                match
+            });
+
             document.getElementById('scoreDisplay').textContent = `Total Score: ${totalScore}`;
             document.getElementById('inputSection').style.display = 'none';
             attempts++;
             startGame();
+        }
+
+        function displayResults() {
+            const tableContainer = document.getElementById('resultTable');
+            tableContainer.style.display = 'block';
+
+            let tableHTML = '<table><thead><tr><th>Attempt</th><th>Displayed Number</th><th>Entered Number</th><th>Match</th></tr></thead><tbody>';
+
+            results.forEach((result, index) => {
+                tableHTML += `<tr>
+                    <td>${index + 1}</td>
+                    <td>${result.displayed}</td>
+                    <td>${result.entered}</td>
+                    <td>${result.match ? '✔️' : '❌'}</td>
+                </tr>`;
+            });
+
+            tableHTML += '</tbody></table>';
+            tableContainer.innerHTML = tableHTML;
         }
 
         function handleEnter(event) {
